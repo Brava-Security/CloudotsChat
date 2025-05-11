@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import compression from 'vite-plugin-compression';
-import type { Plugin } from 'vite';
+import type { Plugin, PluginOption } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,12 +23,11 @@ export default defineConfig({
       },
     },
   },
-  // Set the directory where environment variables are loaded from and restrict prefixes
-  envDir: '../',
+  envDir: './',
   envPrefix: ['VITE_', 'SCRIPT_', 'DOMAIN_', 'ALLOW_'],
   plugins: [
-    react(),
-    nodePolyfills(),
+    react() as PluginOption,
+    nodePolyfills() as PluginOption,
     VitePWA({
       injectRegister: 'auto', // 'auto' | 'manual' | 'disabled'
       registerType: 'autoUpdate', // 'prompt' | 'autoUpdate'
@@ -79,16 +78,16 @@ export default defineConfig({
           },
         ],
       },
-    }),
-    sourcemapExclude({ excludeNodeModules: true }),
+    }) as PluginOption,
+    sourcemapExclude({ excludeNodeModules: true }) as PluginOption,
     compression({
       verbose: true,
       disable: false,
       threshold: 10240, // compress files larger than 10KB
       algorithm: 'gzip',
       ext: '.gz',
-    }),
-  ],
+    }) as PluginOption,
+  ] as PluginOption[],
   publicDir: './public',
   build: {
     sourcemap: process.env.NODE_ENV === 'development',
