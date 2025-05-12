@@ -107,14 +107,8 @@ export default function NewChat({
           )}
           aria-label={localize('com_ui_new_chat')}
         >
-          <NewChatButtonIcon conversation={conversation} />
           <div className="grow overflow-hidden text-ellipsis whitespace-nowrap text-sm text-text-primary">
             {localize('com_ui_new_chat')}
-          </div>
-          <div className="flex gap-3">
-            <span className="flex items-center" data-state="closed">
-              <NewChatIcon className="size-5" />
-            </span>
           </div>
         </a>
       </div>
