@@ -332,6 +332,7 @@
   "com_nav_font_size_xl": "Sehr groß",
   "com_nav_font_size_xs": "Sehr klein",
   "com_nav_help_faq": "Hilfe & FAQ",
+  "com_nav_cloudots_homepage": "Zurück zu Cloudots.io",
   "com_nav_hide_panel": "Rechte Seitenleiste verstecken",
   "com_nav_info_code_artifacts": "Aktiviert die Anzeige experimenteller Code-Artefakte neben dem Chat",
   "com_nav_info_code_artifacts_agent": "Aktiviert die Verwendung von Code-Artefakten für diesen Agenten. Standardmäßig werden zusätzliche, spezielle Anweisungen für die Nutzung von Artefakten hinzugefügt, es sei denn, der \"Benutzerdefinierte Prompt-Modus\" ist aktiviert.",

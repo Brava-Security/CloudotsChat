@@ -43,6 +43,9 @@ function FileFormWrapper({
   const isUploadDisabled = (disableInputs || endpointFileConfig?.disabled) ?? false;
 
   const renderAttachFile = () => {
+    return null;
+
+    // Leaving this in case we decide to re-enable file uploads for agents
     if (isAgents) {
       return (
         <AttachFileMenu
@@ -57,8 +60,6 @@ function FileFormWrapper({
         <AttachFile isRTL={isRTL} disabled={disableInputs} handleFileChange={handleFileChange} />
       );
     }
-
-    return null;
   };
 
   return (

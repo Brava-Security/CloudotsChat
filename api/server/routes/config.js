@@ -74,6 +74,7 @@ router.get('/', async function (req, res) {
         isEnabled(process.env.SHOW_BIRTHDAY_ICON) ||
         process.env.SHOW_BIRTHDAY_ICON === '',
       helpAndFaqURL: process.env.HELP_AND_FAQ_URL || 'https://librechat.ai',
+      cloudotsHomepageURL: process.env.CLOUDOTS_HOMEPAGE_URL || 'https://cloudots.io',
       interface: req.app.locals.interfaceConfig,
       modelSpecs: req.app.locals.modelSpecs,
       sharedLinksEnabled,
