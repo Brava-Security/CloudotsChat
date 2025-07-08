@@ -1,19 +1,18 @@
-import { useMemo, useEffect, useRef } from 'react';
-import { EModelEndpoint, Constants } from 'librechat-data-provider';
 import type * as t from 'librechat-data-provider';
+import { Constants, EModelEndpoint } from 'librechat-data-provider';
 import type { ReactNode } from 'react';
-import { useChatContext, useAgentsMapContext, useAssistantsMapContext } from '~/Providers';
+import { useEffect, useMemo, useRef } from 'react';
+import { useAgentsMapContext, useAssistantsMapContext, useChatContext } from '~/Providers';
+import ConvoIcon from '~/components/Endpoints/ConvoIcon';
+import { BirthdayIcon } from '~/components/svg';
+import { TooltipAnchor } from '~/components/ui';
 import {
   useGetAssistantDocsQuery,
   useGetEndpointsQuery,
-  useGetStartupConfig,
-  useListAgentsQuery,
+  useGetStartupConfig
 } from '~/data-provider';
-import ConvoIcon from '~/components/Endpoints/ConvoIcon';
-import { getIconEndpoint, getEntity, cn } from '~/utils';
-import { useLocalize, useSubmitMessage, useNewConvo } from '~/hooks';
-import { TooltipAnchor } from '~/components/ui';
-import { BirthdayIcon } from '~/components/svg';
+import { useLocalize, useNewConvo, useSubmitMessage } from '~/hooks';
+import { cn, getEntity, getIconEndpoint } from '~/utils';
 import ConvoStarter from './ConvoStarter';
 
 export default function Landing({ Header }: { Header?: ReactNode }) {
