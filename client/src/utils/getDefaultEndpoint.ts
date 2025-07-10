@@ -1,11 +1,11 @@
 import type {
-  TPreset,
   TConversation,
-  EModelEndpoint,
   TEndpointsConfig,
+  TPreset,
 } from 'librechat-data-provider';
-import { getLocalStorageItems } from './localStorage';
+import { EModelEndpoint } from 'librechat-data-provider';
 import { mapEndpoints } from './endpoints';
+import { getLocalStorageItems } from './localStorage';
 
 type TConvoSetup = Partial<TPreset> | Partial<TConversation>;
 
@@ -31,13 +31,7 @@ const getEndpointFromLocalStorage = (endpointsConfig: TEndpointsConfig) => {
     const { endpoint } = lastConversationSetup ?? { endpoint: null };
     const isDefaultConfig = Object.values(endpointsConfig ?? {}).every((value) => !value);
 
-    if (isDefaultConfig && endpoint) {
-      return endpoint;
-    }
-
-    if (isDefaultConfig && endpoint) {
-      return endpoint;
-    }
+    if (isDefaultConfig && endpoint) return endpoint;
 
     return endpoint && endpointsConfig?.[endpoint] != null ? endpoint : null;
   } catch (error) {
@@ -55,11 +49,14 @@ const getDefaultEndpoint = ({
   convoSetup,
   endpointsConfig,
 }: TDefaultEndpoint): EModelEndpoint | undefined => {
-  return (
-    getEndpointFromSetup(convoSetup, endpointsConfig) ||
-    getEndpointFromLocalStorage(endpointsConfig) ||
-    getDefinedEndpoint(endpointsConfig)
-  );
+  return EModelEndpoint.agents;
+  
+  // Leaving this commented out for now if we decide to change default endpoint logic
+  // return (
+  //   getEndpointFromSetup(convoSetup, endpointsConfig) ||
+  //   getEndpointFromLocalStorage(endpointsConfig) ||
+  //   getDefinedEndpoint(endpointsConfig)
+  // );
 };
 
 export default getDefaultEndpoint;

@@ -1,18 +1,18 @@
-import { useMemo } from 'react';
-import { EModelEndpoint, Constants } from 'librechat-data-provider';
 import type * as t from 'librechat-data-provider';
+import { Constants, EModelEndpoint } from 'librechat-data-provider';
 import type { ReactNode } from 'react';
-import { useChatContext, useAgentsMapContext, useAssistantsMapContext } from '~/Providers';
+import { useEffect, useMemo, useRef } from 'react';
+import { useAgentsMapContext, useAssistantsMapContext, useChatContext } from '~/Providers';
+import ConvoIcon from '~/components/Endpoints/ConvoIcon';
+import { BirthdayIcon } from '~/components/svg';
+import { TooltipAnchor } from '~/components/ui';
 import {
   useGetAssistantDocsQuery,
   useGetEndpointsQuery,
-  useGetStartupConfig,
+  useGetStartupConfig
 } from '~/data-provider';
-import ConvoIcon from '~/components/Endpoints/ConvoIcon';
-import { getIconEndpoint, getEntity, cn } from '~/utils';
-import { useLocalize, useSubmitMessage } from '~/hooks';
-import { TooltipAnchor } from '~/components/ui';
-import { BirthdayIcon } from '~/components/svg';
+import { useLocalize, useNewConvo, useSubmitMessage } from '~/hooks';
+import { cn, getEntity, getIconEndpoint } from '~/utils';
 import ConvoStarter from './ConvoStarter';
 
 export default function Landing({ Header }: { Header?: ReactNode }) {
@@ -21,8 +21,38 @@ export default function Landing({ Header }: { Header?: ReactNode }) {
   const assistantMap = useAssistantsMapContext();
   const { data: startupConfig } = useGetStartupConfig();
   const { data: endpointsConfig } = useGetEndpointsQuery();
+  const agentIds = Object.keys(agentsMap ?? {});
+  const { newConversation } = useNewConvo();
+  const hasAutoStarted = useRef(false);
 
   const localize = useLocalize();
+
+  // Auto-start conversation with default agent on first visit
+  useEffect(() => {
+    // Only auto-start if:
+    // 1. We haven't already auto-started
+    // 2. We have agents available
+    // 3. We have the necessary config data
+    // 4. The conversation is still in "new" state (no messages)
+    if (
+      !hasAutoStarted.current &&
+      agentIds.length > 0 &&
+      endpointsConfig &&
+      startupConfig &&
+      conversation?.conversationId === 'new'
+    ) {
+      hasAutoStarted.current = true;
+      
+      // Start a new conversation with the first agent as default
+      newConversation({
+        template: {
+          endpoint: EModelEndpoint.agents,
+          agent_id: agentIds[0],
+        },
+        buildDefault: true,
+      });
+    }
+  }, [agentIds, endpointsConfig, startupConfig, conversation?.conversationId, newConversation]);
 
   let { endpoint = '' } = conversation ?? {};
 

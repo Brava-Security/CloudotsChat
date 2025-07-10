@@ -326,6 +326,7 @@
   "com_nav_font_size_xl": "Extra grande",
   "com_nav_font_size_xs": "Extra pequeño",
   "com_nav_help_faq": "Ayuda y preguntas frecuentes",
+  "com_nav_cloudots_homepage": "Volver a Cloudots.io",
   "com_nav_hide_panel": "Ocultar el panel lateral derecho",
   "com_nav_info_code_artifacts": "Permite mostrar artefactos de código experimentales junto al chat",
   "com_nav_info_custom_prompt_mode": "Cuando está habilitado, no se incluirá el mensaje del sistema predeterminado para artefactos. En este modo, todas las instrucciones para generar artefactos deberán proporcionarse manualmente.",

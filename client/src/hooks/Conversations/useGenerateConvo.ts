@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { useCallback, useRef, useEffect } from 'react';
 import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import { LocalStorageKeys, isAssistantsEndpoint } from 'librechat-data-provider';
+import { LocalStorageKeys, isAssistantsEndpoint, isAgentsEndpoint } from 'librechat-data-provider';
 import type {
   TPreset,
   TModelsConfig,
@@ -113,6 +113,17 @@ const useGenerateConvo = ({
 
       if (conversation.assistant_id != null && !isAssistantEndpoint) {
         conversation.assistant_id = undefined;
+      }
+
+      // Handle agent endpoints
+      const isAgentEndpoint = isAgentsEndpoint(defaultEndpoint ?? '');
+      const currentAgentId = conversation.agent_id ?? '';
+      
+      if (!currentAgentId && isAgentEndpoint) {
+        conversation.agent_id =
+          localStorage.getItem(
+            `${LocalStorageKeys.AGENT_ID_PREFIX}${index}`,
+          ) ?? '';
       }
 
       const models = modelsConfig?.[defaultEndpoint ?? ''] ?? [];

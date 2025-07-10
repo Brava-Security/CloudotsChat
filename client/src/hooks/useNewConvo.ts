@@ -1,36 +1,37 @@
-import { useCallback, useRef } from 'react';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import { useNavigate } from 'react-router-dom';
-import {
-  Constants,
-  FileSources,
-  EModelEndpoint,
-  isParamEndpoint,
-  LocalStorageKeys,
-  isAssistantsEndpoint,
-} from 'librechat-data-provider';
-import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilCallback } from 'recoil';
 import type {
-  TPreset,
-  TSubmission,
-  TModelsConfig,
   TConversation,
   TEndpointsConfig,
+  TModelsConfig,
+  TPreset,
+  TSubmission,
 } from 'librechat-data-provider';
-import type { AssistantListItem } from '~/common';
 import {
-  getEndpointField,
+  Constants,
+  EModelEndpoint,
+  FileSources,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+  isParamEndpoint,
+  LocalStorageKeys,
+} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import { useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import type { AssistantListItem } from '~/common';
+import { mainTextareaId } from '~/common';
+import { useDeleteFilesMutation, useGetEndpointsQuery, useGetStartupConfig, useListAgentsQuery } from '~/data-provider';
+import store from '~/store';
+import {
   buildDefaultConvo,
   getDefaultEndpoint,
   getDefaultModelSpec,
+  getEndpointField,
   getModelSpecIconURL,
   updateLastSelectedModel,
 } from '~/utils';
-import { useDeleteFilesMutation, useGetEndpointsQuery, useGetStartupConfig } from '~/data-provider';
 import useAssistantListMap from './Assistants/useAssistantListMap';
 import { usePauseGlobalAudio } from './Audio';
-import { mainTextareaId } from '~/common';
-import store from '~/store';
 
 const useNewConvo = (index = 0) => {
   const navigate = useNavigate();
@@ -43,6 +44,9 @@ const useNewConvo = (index = 0) => {
   const clearAllLatestMessages = store.useClearLatestMessages(`useNewConvo ${index}`);
   const setSubmission = useSetRecoilState<TSubmission | null>(store.submissionByIndex(index));
   const { data: endpointsConfig = {} as TEndpointsConfig } = useGetEndpointsQuery();
+  const { data: agentsList } = useListAgentsQuery(undefined, {
+    select: (res) => res.data,
+  });
 
   const modelsQuery = useGetModelsQuery();
   const timeoutIdRef = useRef<NodeJS.Timeout>();
@@ -137,12 +141,24 @@ const useNewConvo = (index = 0) => {
             conversation.assistant_id = undefined;
           }
 
+          // Handle agent endpoints
+          const isAgentEndpoint = isAgentsEndpoint(defaultEndpoint);
+          const currentAgentId = conversation.agent_id ?? '';
+          
+          if (!currentAgentId && isAgentEndpoint) {
+            conversation.agent_id =
+              localStorage.getItem(
+                `${LocalStorageKeys.AGENT_ID_PREFIX}${index}`,
+              ) ?? '';
+          }
+
           const models = modelsConfig?.[defaultEndpoint] ?? [];
           conversation = buildDefaultConvo({
             conversation,
             lastConversationSetup: activePreset as TConversation,
             endpoint: defaultEndpoint,
             models,
+            fallbackAgentId: agentsList?.[0]?.id,
           });
         }
 
@@ -174,7 +190,7 @@ const useNewConvo = (index = 0) => {
           }
         }, 150);
       },
-    [endpointsConfig, defaultPreset, assistantsListMap, modelsQuery.data],
+    [endpointsConfig, defaultPreset, assistantsListMap, modelsQuery.data, agentsList?.[0]?.id],
   );
 
   const newConversation = useCallback(
@@ -276,6 +292,7 @@ const useNewConvo = (index = 0) => {
       files,
       setFiles,
       mutateAsync,
+      agentsList,
     ],
   );
 

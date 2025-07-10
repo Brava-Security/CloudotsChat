@@ -1,10 +1,10 @@
-import {
-  parseConvo,
-  EModelEndpoint,
-  isAssistantsEndpoint,
-  isAgentsEndpoint,
-} from 'librechat-data-provider';
 import type { TConversation } from 'librechat-data-provider';
+import {
+  EModelEndpoint,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+  parseConvo,
+} from 'librechat-data-provider';
 import { getLocalStorageItems } from './localStorage';
 
 const buildDefaultConvo = ({
@@ -12,11 +12,13 @@ const buildDefaultConvo = ({
   conversation,
   endpoint = null,
   lastConversationSetup,
+  fallbackAgentId,
 }: {
   models: string[];
   conversation: TConversation;
   endpoint?: EModelEndpoint | null;
   lastConversationSetup: TConversation | null;
+  fallbackAgentId?: string;
 }): TConversation => {
   const { lastSelectedModel, lastSelectedTools } = getLocalStorageItems();
   const endpointType = lastConversationSetup?.endpointType ?? conversation.endpointType;
@@ -76,9 +78,12 @@ const buildDefaultConvo = ({
 
   // Ensures agent_id is always defined
   const agentId = convo?.agent_id ?? '';
-  const defaultAgentId = lastConversationSetup?.agent_id ?? '';
-  if (isAgentsEndpoint(endpoint) && !defaultAgentId && agentId) {
+  const defaultAgentId = lastConversationSetup?.agent_id ?? fallbackAgentId ?? '';
+
+  if (isAgentsEndpoint(endpoint) && agentId) {
     defaultConvo.agent_id = agentId;
+  } else {
+    defaultConvo.agent_id = defaultAgentId;
   }
 
   defaultConvo.tools = lastConversationSetup?.tools ?? lastSelectedTools ?? defaultConvo.tools;

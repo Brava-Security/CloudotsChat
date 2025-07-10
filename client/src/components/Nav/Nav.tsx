@@ -19,6 +19,7 @@ import { Spinner } from '~/components/svg';
 import SearchBar from './SearchBar';
 import NavToggle from './NavToggle';
 import NewChat from './NewChat';
+import CloudotsButton from './CloudotsButton';
 import { cn } from '~/utils';
 import store from '~/store';
 
@@ -187,6 +188,9 @@ const Nav = ({
                     {(isFetchingNextPage || showLoading) && (
                       <Spinner className={cn('m-1 mx-auto mb-4 h-4 w-4 text-text-primary')} />
                     )}
+                  </div>
+                  <div className="mt-2">
+                    <CloudotsButton />
                   </div>
                   <AccountSettings />
                 </nav>
