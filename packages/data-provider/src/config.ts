@@ -526,6 +526,7 @@ export type TStartupConfig = {
   showBirthdayIcon: boolean;
   helpAndFaqURL: string;
   cloudotsHomepageURL: string;
+  loginURL: string;
   customFooter?: string;
   modelSpecs?: TSpecsConfig;
   sharedLinksEnabled: boolean;
