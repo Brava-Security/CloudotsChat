@@ -4,9 +4,14 @@ function Login() {
   const { data: startupConfig } = useGetStartupConfig();
 
   const loginURL = startupConfig?.loginURL;
+  const cloudotsURL = startupConfig?.cloudotsHomepageURL;
 
   if (!loginURL) {
-    return <div>Something went wrong. Please go to Cloudots to login</div>;
+    return (
+      <div>
+        Something went wrong. Please go to {cloudotsURL ?? 'Cloudots'} to login
+      </div>
+    );
   }
 
   window.location.href = loginURL;
