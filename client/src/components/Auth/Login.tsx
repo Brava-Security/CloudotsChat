@@ -3,18 +3,10 @@ import { useGetStartupConfig } from '../../data-provider';
 function Login() {
   const { data: startupConfig } = useGetStartupConfig();
 
-  const loginURL = startupConfig?.loginURL;
-  const cloudotsURL = startupConfig?.cloudotsHomepageURL;
-
-  if (!loginURL) {
-    return (
-      <div>
-        Something went wrong. Please go to {cloudotsURL ?? 'Cloudots'} to login
-      </div>
-    );
-  }
+  const loginURL = startupConfig?.loginURL ?? 'https://chat.cloudots.io/oauth/openid/callback';
 
   window.location.href = loginURL;
+  
   return <div>Redirecting to Cloudots...</div>;
 }
 
