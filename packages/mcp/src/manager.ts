@@ -5,6 +5,7 @@ import type * as t from './types/mcp';
 import { formatToolContent } from './parsers';
 import { MCPConnection } from './connection';
 import { CONSTANTS } from './enum';
+import { MCPOptions } from './types/mcp';
 
 export class MCPManager {
   private static instance: MCPManager | null = null;
@@ -31,13 +32,16 @@ export class MCPManager {
     return MCPManager.instance;
   }
 
-  public async initializeMCP(mcpServers: t.MCPServers): Promise<void> {
+  public async initializeMCP(mcpServers: t.MCPServers, processMCPEnv?: (obj: MCPOptions) => MCPOptions,): Promise<void> {
     this.logger.info('[MCP] Initializing servers');
 
     const entries = Object.entries(mcpServers);
     const initializedServers = new Set();
     const connectionResults = await Promise.allSettled(
-      entries.map(async ([serverName, config], i) => {
+      entries.map(async ([serverName, _config], i) => {
+        console.log(_config)
+        const config = processMCPEnv ? processMCPEnv(_config) : _config;
+        console.log(config)
         const connection = new MCPConnection(serverName, config, this.logger);
 
         connection.on('connectionChange', (state) => {

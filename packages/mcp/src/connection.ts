@@ -134,7 +134,23 @@ export class MCPConnection extends EventEmitter {
           }
           const url = new URL(options.url);
           this.logger?.info(`[MCP][${this.serverName}] Creating SSE transport: ${url.toString()}`);
-          const transport = new SSEClientTransport(url);
+
+          const headers = { ...options.headers };
+
+          const transport = new SSEClientTransport(url, {
+            requestInit: {
+              headers,
+            },
+            eventSourceInit: {
+              fetch: (url, init) => {
+                const fetchHeaders = new Headers(Object.assign({}, init?.headers, headers));
+                return fetch(url, {
+                  ...init,
+                  headers: fetchHeaders,
+                });
+              },
+            },
+          });
 
           transport.onclose = () => {
             this.logger?.info(`[MCP][${this.serverName}] SSE transport closed`);
