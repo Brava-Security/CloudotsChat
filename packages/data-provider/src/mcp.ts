@@ -103,13 +103,13 @@ export function processMCPEnv(obj: MCPOptions): MCPOptions {
   if ('env' in obj && obj.env) {
     const processedEnv: Record<string, string> = {};
     for (const [key, value] of Object.entries(obj.env)) {
-      processedEnv[key] = extractEnvVariable(value as string); // TODO: deal with this crap
+      processedEnv[key] = extractEnvVariable(value as string);
     }
     obj.env = processedEnv;
   } else if ('headers' in obj && obj.headers) {
     const processedHeaders: Record<string, string> = {};
     for (const [key, value] of Object.entries(obj.headers)) {
-      processedHeaders[key] = extractEnvVariable(value as string); // TODO: deal with this crap also
+      processedHeaders[key] = extractEnvVariable(value as string);
     }
     obj.headers = processedHeaders;
   }

@@ -39,9 +39,7 @@ export class MCPManager {
     const initializedServers = new Set();
     const connectionResults = await Promise.allSettled(
       entries.map(async ([serverName, _config], i) => {
-        console.log(_config)
         const config = processMCPEnv ? processMCPEnv(_config) : _config;
-        console.log(config)
         const connection = new MCPConnection(serverName, config, this.logger);
 
         connection.on('connectionChange', (state) => {
