@@ -64,6 +64,7 @@ export const WebSocketOptionsSchema = BaseOptionsSchema.extend({
 
 export const SSEOptionsSchema = BaseOptionsSchema.extend({
   type: z.literal('sse').optional(),
+  headers: z.record(z.string(), z.string()).optional(),
   url: z
     .string()
     .url()
@@ -85,3 +86,33 @@ export const MCPOptionsSchema = z.union([
 ]);
 
 export const MCPServersSchema = z.record(z.string(), MCPOptionsSchema);
+
+
+export type MCPOptions = z.infer<typeof MCPOptionsSchema>;
+
+/**
+ * Recursively processes an object to replace environment variables in string values
+ * @param {MCPOptions} obj - The object to process
+ * @returns {MCPOptions} - The processed object with environment variables replaced
+ */
+export function processMCPEnv(obj: MCPOptions): MCPOptions {
+  if (obj === null || obj === undefined) {
+    return obj;
+  }
+
+  if ('env' in obj && obj.env) {
+    const processedEnv: Record<string, string> = {};
+    for (const [key, value] of Object.entries(obj.env)) {
+      processedEnv[key] = extractEnvVariable(value as string);
+    }
+    obj.env = processedEnv;
+  } else if ('headers' in obj && obj.headers) {
+    const processedHeaders: Record<string, string> = {};
+    for (const [key, value] of Object.entries(obj.headers)) {
+      processedHeaders[key] = extractEnvVariable(value as string);
+    }
+    obj.headers = processedHeaders;
+  }
+
+  return obj;
+}
