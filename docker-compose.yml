@@ -35,6 +35,8 @@ services:
     volumes:
       - ./data-node:/data/db
     command: mongod --noauth
+    ports:
+      - 27017:27017
   meilisearch:
     container_name: chat-meilisearch
     image: getmeili/meilisearch:v1.12.3
