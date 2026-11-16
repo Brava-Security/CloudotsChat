@@ -23,8 +23,8 @@ const CloudotsButton = () => {
       onClick={handleClick}
       className={cn(
         'flex w-full items-center gap-2 rounded-lg p-2 text-sm transition-colors duration-200',
-        'text-orange-600 hover:bg-orange-100 dark:text-orange-400 dark:hover:bg-orange-900/20',
-        'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500'
+        'text-brava-600 hover:bg-brava-100 dark:text-brava-400 dark:hover:bg-brava-900/20',
+        'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brava-500'
       )}
       title={localize('com_nav_cloudots_homepage')}
     >

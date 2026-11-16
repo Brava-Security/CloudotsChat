@@ -45,7 +45,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
       if (validator) {
         setStatus('success');
-        setStatusColor('text-green-500 dark:text-green-500');
+        setStatusColor('text-emerald-500 dark:text-emerald-500');
       }
 
       onFileSelected(jsonData);

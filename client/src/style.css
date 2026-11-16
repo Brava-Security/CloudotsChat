@@ -18,17 +18,18 @@
   --gray-800: #212121;
   --gray-850: #171717;
   --gray-900: #0d0d0d;
-  --green-50: #ecfdf5;
-  --green-100: #d1fae5;
-  --green-200: #a7f3d0;
-  --green-300: #6ee7b7;
-  --green-400: #34d399;
-  --green-500: #10b981;
-  --green-600: #059669;
-  --green-700: #047857;
-  --green-800: #065f46;
-  --green-900: #064e3b;
-  --green-950: #022c22;
+  /* Brava coral (LibreChat's "green" accent tokens) */
+  --green-50: #fff1ee;
+  --green-100: #ffe2dd;
+  --green-200: #ffc4ba;
+  --green-300: #ffa393;
+  --green-400: #ff8672;
+  --green-500: #ff6f61;
+  --green-600: #e45a4d;
+  --green-700: #cb4f43;
+  --green-800: #b14238;
+  --green-900: #6e2620;
+  --green-950: #3d1410;
   --red-50: #fef2f2;
   --red-100: #fee2e2;
   --red-200: #fecaca;
@@ -1212,12 +1213,12 @@ button {
 .btn-primary {
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
-  background-color: rgba(16, 163, 127, var(--tw-bg-opacity));
+  background-color: rgba(228, 90, 77, var(--tw-bg-opacity));
   color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 .btn-primary:hover {
   --tw-bg-opacity: 1;
-  background-color: rgba(26, 127, 100, var(--tw-bg-opacity));
+  background-color: rgba(203, 79, 67, var(--tw-bg-opacity));
 }
 .btn-primary:focus {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
@@ -1238,7 +1239,7 @@ button {
 }
 .btn-primary:disabled:hover {
   --tw-bg-opacity: 1;
-  background-color: rgba(16, 163, 127, var(--tw-bg-opacity));
+  background-color: rgba(228, 90, 77, var(--tw-bg-opacity));
 }
 .btn-secondary {
   --tw-border-opacity: 1;
